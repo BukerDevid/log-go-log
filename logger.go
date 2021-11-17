@@ -94,6 +94,8 @@ func InitCastomLogger(format logrus.Formatter, level logrus.Level, file bool, st
 	if std {
 		if FINAL_WRITER_LOG != nil {
 			FINAL_WRITER_LOG = io.MultiWriter(FINAL_WRITER_LOG, &OutConsole{})
+		} else {
+			FINAL_WRITER_LOG = &OutConsole{}
 		}
 	}
 	if FINAL_WRITER_LOG != nil {
