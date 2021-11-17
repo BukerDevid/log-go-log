@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 
-	. "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
+	_ "github.com/sirupsen/logrus"
 )
 
 const (
@@ -77,15 +78,15 @@ func (ou *OutConsole) Write(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
-func InitCastomLogger(format Formatter, level Level, file bool, std bool) {
-	SetFormatter(format)
-	SetLevel(level)
-	SetOutput(os.Stdout)
+func InitCastomLogger(format logrus.Formatter, level logrus.Level, file bool, std bool) {
+	logrus.SetFormatter(format)
+	logrus.SetLevel(level)
+	logrus.SetOutput(os.Stdout)
 
 	if file {
 		file, err := os.OpenFile(PKG_APP_LOGGER_WR_FILE_PATH, os.O_CREATE|os.O_WRONLY, 0666)
 		if err != nil {
-			Fatal(err.Error())
+			logrus.Fatal(err.Error())
 			panic(err)
 		}
 		FINAL_WRITER_LOG = io.MultiWriter(file)
@@ -96,13 +97,13 @@ func InitCastomLogger(format Formatter, level Level, file bool, std bool) {
 		}
 	}
 	if FINAL_WRITER_LOG != nil {
-		SetOutput(FINAL_WRITER_LOG)
+		logrus.SetOutput(FINAL_WRITER_LOG)
 	}
 }
 
 func AddOut(writer io.Writer) {
 	if writer != nil {
 		FINAL_WRITER_LOG = io.MultiWriter(FINAL_WRITER_LOG, writer)
-		SetOutput(FINAL_WRITER_LOG)
+		logrus.SetOutput(FINAL_WRITER_LOG)
 	}
 }
