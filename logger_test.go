@@ -1,37 +1,38 @@
-package logger
+package loggolog
 
 import (
 	"os"
 	"testing"
 
-	"github.com/bukerdevid/logger"
+	. "github.com/bukerdevid/log-go-log"
+	"github.com/stretchr/testify/require"
 )
 
 var PKG_APP_LOGGER_WR_DFILE_PATH = "salair-back.re.log"
 
 func TestWriteLog(t *testing.T) {
-	logger.InitCastomLogger(&logger.JSONFormatter{TimestampFormat: "15:04:05 02/01/2006"}, logger.TraceLevel, true, true)
+	InitCastomLogger(&JSONFormatter{TimestampFormat: "15:04:05 02/01/2006"}, TraceLevel, true, true)
 	defer func() {
 		err := recover()
 		if err != nil {
-			entry := err.(*logger.Entry)
-			logger.WithFields(logger.Fields{
+			entry := err.(*Entry)
+			WithFields(Fields{
 				"omg":         true,
 				"err_size":    entry.Data["size"],
 				"err_level":   entry.Level,
 				"err_message": entry.Message,
 			}).Error("The ice breaks!")
 		}
-		logger.require.True(t, true)
+		require.True(t, true)
 	}()
 
 	for count := 0; count < 10; count++ {
-		logger.Info("Random data - ", count)
-		logger.Debug("Random data - ", count)
-		logger.Warn("Random data - ", count)
-		logger.Error("Random data - ", count)
+		Info("Random data - ", count)
+		Debug("Random data - ", count)
+		Warn("Random data - ", count)
+		Error("Random data - ", count)
 	}
-	logger.Panic("Check pnic")
+	Panic("Check pnic")
 }
 
 func TestAddOut(t *testing.T) {
