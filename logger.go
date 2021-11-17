@@ -11,8 +11,9 @@ import (
 	_ "github.com/sirupsen/logrus"
 )
 
-const (
+var (
 	PKG_APP_LOGGER_WR_FILE_PATH = "default.logger.log"
+	FINAL_WRITER_LOG            io.Writer
 )
 
 var (
@@ -24,8 +25,6 @@ var (
 	COLORWhite  = "\033[37m"
 	BOLDText    = "\033[1m"
 )
-
-var FINAL_WRITER_LOG io.Writer
 
 type OutConsole struct {
 	Data JSONLogFormat
@@ -108,4 +107,11 @@ func AddOut(writer io.Writer) {
 		FINAL_WRITER_LOG = io.MultiWriter(FINAL_WRITER_LOG, writer)
 		logrus.SetOutput(FINAL_WRITER_LOG)
 	}
+}
+
+func ChangePathFile(path string) {
+	if path == "" {
+		return
+	}
+	PKG_APP_LOGGER_WR_FILE_PATH = path
 }
